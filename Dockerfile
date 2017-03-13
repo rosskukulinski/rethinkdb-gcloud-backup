@@ -35,5 +35,6 @@ ENV PATH /google-cloud-sdk/bin:$PATH
 
 ADD backup.sh backup.sh
 ADD restore.sh restore.sh
+ADD drop-dbs.py drop-dbs.py
 
 CMD "/backup.sh"

@@ -4,6 +4,7 @@ RETHINKDB_HOST=${RETHINKDB_HOST:-rethinkdb-proxy}
 RETHINKDB_PORT=${RETHINKDB_PORT:-28015}
 BACKUP_NAME=${BACKUP_NAME:-rethinkdb}
 FILE_NAME=${FILE_NAME:-${BACKUP_NAME}_latest.tar.gz}
+DROP_ALL=${DROP_ALL:-false}
 
 [ -z "${GCLOUD_BUCKET}" ] && { echo "=> GCLOUD_BUCKET cannot be empty" && exit 1; }
 
@@ -21,6 +22,11 @@ fi
 echo "=> Downloading backup file"
 
 gsutil cp gs://${GCLOUD_BUCKET}/${FILE_NAME} ${FILE_NAME}
+
+if [ "${DROP_ALL}" == "true" ]; then
+  echo "=> Dropping all dbs"
+  python drop-dbs.py
+fi
 
 echo "=> Restore starting"
 
